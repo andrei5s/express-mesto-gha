@@ -8,7 +8,7 @@
 Для этого замените разметку бейджей на следующий фрагмент, подставив вместо `${имя_пользователя}` и `${имя_репозитория}` соответствующие значения.
 
 ```
-[![Tests for sprint 13](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml) 
+[![Tests for sprint 13](https://github.com/${andrei5s}/${https://github.com/andrei5s/express-mesto-gha.git}/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-13-sprint.yml) 
 
 [![Tests for sprint 14](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/${имя_пользователя}/${имя репозитория}/actions/workflows/tests-14-sprint.yml)
 ```
@@ -16,7 +16,7 @@
 ##Проектная работа 13
 #EXPRESS-MESTO-GHA
 ###Разработал Андрей Суховьев
-https://andrei5s.github.io/mesto/index.html
+https://github.com/andrei5s/express-mesto-gha.git
 Технологии
 
 Проект реализован на Node с применением Express.
