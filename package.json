@@ -1,0 +1,30 @@
+{
+    "name": "express-mesto-gha",
+    "version": "1.0.0",
+    "description": "[![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/yandex-praktikum/express-mesto-gha/actions/workflows/tests-14-sprint.yml)\r # Проект Mesto фронтенд + бэкенд",
+    "main": "app.js",
+    "scripts": {
+        "dev": "nodemon app.js",
+        "start": "node app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/andrei5s/express-mesto-gha.git"
+    },
+    "keywords": [],
+    "author": "Andrey Sukhovev",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/andrei5s/express-mesto-gha/issues"
+    },
+    "homepage": "https://github.com/andrei5s/express-mesto-gha#readme",
+    "devDependencies": {
+        "eslint": "^8.25.0",
+        "eslint-plugin-react": "^7.31.10",
+        "nodemon": "^2.0.20"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "mongoose": "^6.6.5"
+    }
+}
