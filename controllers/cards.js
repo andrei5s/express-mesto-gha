@@ -7,8 +7,14 @@ module.exports.createCard = (req, res) => {
     } = req.body;
     const owner = req.user._id
     Card.create({ name, link, owner })
-        .then((card) => {
-            res.status(200).send(card);
+        .then((user) => {
+            res.status(201).send({ data: user });
+        })
+        .catch((err) => {
+            console.log(`Ошибка: ${err}`);
+            if (err.name.includes('ValidationError')) {
+                throw new BadRequestError('Ошибка валидации данных');
+            }
         })
         .catch((err) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка', err });
@@ -17,13 +23,14 @@ module.exports.createCard = (req, res) => {
 
 module.exports.getCards = (req, res) => {
     Card.find({})
-        .then((user) => {
-            return res.send(user);
+        .then((data) => {
+            return res.status(200).send(data);
         })
         .catch((err) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка', err });
         });
 };
+
 
 module.exports.deleteCard = (req, res) => {
     const { id } = req.params;
@@ -41,12 +48,28 @@ module.exports.likeCard = (req, res) => {
             { new: true },
         )
         .then((card) => {
-            res.status(200).send({ Card });
+            if (!card) {
+                throw new NotFoundError('Такой карточки нет!');
+            }
+            res.status(200).send({ data: card });
         })
         .catch((err) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка', err });
         });
-}
+};
+
+/*module.exports.likeCard = (req, res, next) => {
+    Card.findByIdAndUpdate(
+            req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true },
+        )
+        .then((card) => {
+            if (!card) {
+                throw new NotFoundError('Такой карточки нет!');
+            }
+            res.status(STATUS_OK).send({ data: card });
+        })
+        .catch(next);
+};*/
 
 module.exports.dislikeCard = (req, res) => {
     Card.findByIdAndUpdate(
