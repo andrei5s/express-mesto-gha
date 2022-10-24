@@ -39,7 +39,7 @@
          });
  };
 
- const updateProfile = (req, res) => {
+ const updateProfile = (req, res, next) => {
      const { name, about } = req.body;
      User.findByIdAndUpdate(
              req.user._id, { name, about }, { new: true, runValidators: true },
@@ -51,6 +51,9 @@
              }
              if (err instanceof mongoose.Error.CastError) {
                  return res.status(400).send({ message: 'Не корректный _id', err });
+             }
+             if (err instanceof mongoose.Error.ValidationError) {
+                 return res.status(400).send({ message: 'Ошибка валидации', err });
              }
              return res.status(500).send({ message: 'На сервере произошла ошибка', err });
          });

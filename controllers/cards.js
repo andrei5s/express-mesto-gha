@@ -13,7 +13,7 @@ module.exports.createCard = (req, res) => {
         .catch((err) => {
             console.log(`Ошибка: ${err}`);
             if (err.name.includes('ValidationError')) {
-                throw new BadRequestError('Ошибка валидации данных');
+                return res.status(400).send({ message: 'Ошибка валидации', err });
             }
         })
         .catch((err) => {
@@ -68,9 +68,10 @@ module.exports.likeCard = (req, res) => {
         )
         .then((card) => {
             if (!card) {
-                throw new NotFoundError('Такой карточки нет!');
+                // throw new NotFoundError('Такой карточки нет!');
+                return res.status(404).send({ message: 'Такой карточки нет!', err });
             }
-            res.status(200).send({ data: card });
+            return res.status(200).send({ data: card });
         })
         .catch((err) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка', err });
