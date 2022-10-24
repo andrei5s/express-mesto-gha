@@ -2,16 +2,11 @@ const router = require('express').Router();
 
 const usersRouter = require('./users');
 const cardsRouter = require('./cards');
+const notFoundRouter = require('./not-found-error');
 
 router.use('/users', usersRouter);
 router.use('/cards', cardsRouter);
+router.use('/not-found-error', notFoundRouter);
 
-router.all('*', () => {
-    // throw new NotFoundError('Запрашиваемый ресурс не найден');
-    return res.status(404).send({
-        message: 'Запрашиваемый ресурс не найден',
-        err
-    });
-});
 
 module.exports = router;

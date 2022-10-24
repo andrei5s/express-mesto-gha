@@ -21,4 +21,5 @@ router.patch('/:id', updateProfile);
 
 router.patch('/:id/avatar', updateAvatar);
 
+
 module.exports = router;
