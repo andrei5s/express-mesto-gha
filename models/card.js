@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Schema } = require('mongoose');
 
 const CardSchema = new mongoose.Schema({
     name: {
@@ -21,7 +22,7 @@ const CardSchema = new mongoose.Schema({
     }],
     createdAt: {
         type: Date,
-        default: Date.now,
+        default: Date.now(),
     },
 
 }, {
