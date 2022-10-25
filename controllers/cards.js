@@ -32,24 +32,39 @@ module.exports.getCards = (req, res) => {
         });
 };
 
-module.exports.deleteCard = (req, res) => {
-    const { id } = req.params;
+/*module.exports.deleteCard = (req, res) => {
 
-    Card.findById(id)
+    Card.findById(req.user._id)
         .then((card) => {
             if (!card) {
-                return res.status(404).send({ message: 'Такой карточки нет!', err });
+                return res.status(400).send({ message: 'Такой карточки нет!', err });
             }
-            if (JSON.stringify(card.owner) !== JSON.stringify(req.card._id)) {
+            if (JSON.stringify(card.owner) !== JSON.stringify(req.user._id)) {
                 return res.status(404).send({ message: 'Невозможно удалить данную карточку', err });
             }
-            return Card.findByIdAndRemove(id);
+            Card.findByIdAndRemove(req.user._id);
         })
         .then((card) => res.status(200).send({ data: card }))
         .catch((err) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка', err });
         });
-};
+};*/
+
+module.exports.deleteCard = async(req, res) => {
+    try {
+        const card = await Card.findById(req.user._id);
+        if (!card) {
+            return res.status(400).send({ message: 'Такой карточки нет!' });
+        }
+        if (JSON.stringify(card.owner) !== JSON.stringify(req.user._id)) {
+            return res.status(404).send({ message: 'Невозможно удалить данную карточку', err });
+        }
+        const newCard = await Card.findByIdAndRemove(req.user._id, req.body, { new: true, runValidators: true });
+        res.send(newCard);
+    } catch (err) {
+        return res.status(500).send({ message: 'На сервере произошла ошибка', err });
+    }
+}
 
 module.exports.likeCard = (req, res) => {
     Card.findByIdAndUpdate(
@@ -72,7 +87,7 @@ module.exports.dislikeCard = (req, res) => {
         )
         .then((card) => {
             if (!card) {
-                return res.status(400).send({ message: 'Такой карточки нет!' });
+                return res.status(404).send({ message: 'Такой карточки нет!' });
             }
             return res.status(200).send({ data: card });
         })
@@ -81,6 +96,6 @@ module.exports.dislikeCard = (req, res) => {
         });
 };
 
-//module.exports = {
-
-//}
+/*module.exports = {
+    deleteCard
+}*/
