@@ -48,8 +48,10 @@ module.exports.deleteCard = (req, res) => {
         })
         //  .then((card) =>res.status(200).send({ data: card }))
         .catch((err) => {
-            console.log('err = ', err);
-            return res.status(500).send({ message: 'На сервере произошла ошибка', err });
+            if (err.name === "CastError") {
+                return res.status(400).send({ message: 'Ошибка в id карточки' });
+            }
+            return res.status(500).send({ message: 'На сервере произошла ошибка' });
         });
 };
 
