@@ -12,7 +12,7 @@ router.get('/', getCards);
 
 router.post('/', createCard);
 
-router.delete('/:cardId', deleteCard);
+router.delete('/:id', deleteCard);
 
 router.put('/:cardId/likes', likeCard);
 
