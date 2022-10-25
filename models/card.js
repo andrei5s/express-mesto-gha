@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
-const CardSchema = new mongoose.Schema({
+const cardSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -22,11 +22,11 @@ const CardSchema = new mongoose.Schema({
     }],
     createdAt: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
     },
 
 }, {
     versionKey: false
 });
 
-module.exports = mongoose.model('card', CardSchema);
+module.exports = mongoose.model('card', cardSchema);

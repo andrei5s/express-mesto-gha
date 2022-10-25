@@ -5,17 +5,17 @@ const {
     createCard,
     deleteCard,
     likeCard,
-    dislikeCard,
+    dislikeCard
 } = require('../controllers/cards.js');
 
 router.get('/', getCards);
 
 router.post('/', createCard);
 
-router.delete('/:id', deleteCard);
+router.delete('/:cardId', deleteCard);
 
-router.put('/:id/likes', likeCard);
+router.put('/:cardId/likes', likeCard);
 
-router.delete('/:id/likes', dislikeCard);
+router.delete('/:cardId/likes', dislikeCard);
 
 module.exports = router;

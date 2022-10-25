@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Card = require('../models/card');
 
 module.exports.createCard = (req, res) => {
@@ -54,11 +55,14 @@ module.exports.likeCard = (req, res) => {
     Card.findByIdAndUpdate(
             req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true },
         )
+        .populate(['owner', 'likes'])
         .then((card) => {
-            if (!card) {
-                return res.status(400).send({ message: 'Такой карточки нет!' });
-            }
+            //   if (!Card) {
+            //       return res.status(400).send({ message: 'Такой карточки нет!' });
+            //   }
             return res.status(200).send({ data: card });
+
+
         })
         .catch((err) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка', err });
@@ -79,3 +83,7 @@ module.exports.dislikeCard = (req, res) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка', err });
         });
 };
+
+//module.exports = {
+
+//}
