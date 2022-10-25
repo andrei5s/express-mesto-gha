@@ -59,20 +59,6 @@
          });
  };
 
- /*const updateUser = async(req, res) => {
-     try {
-         const user = await User.findById(req.params.id);
-         if (!user) {
-             return res.status(400).send({ message: 'Пользователь не найден' });
-         }
-         const newUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-         res.send(newUser);
-     } catch (err) {
-         return res.status(500).send({ message: 'На сервере произошла ошибка', err });
-     }
- }*/
-
-
  const updateAvatar = (req, res) => {
      const { avatar } = req.body;
      User.findByIdAndUpdate(
@@ -92,6 +78,5 @@
      getUser,
      getUserById,
      updateProfile,
-     // updateUser,
      updateAvatar
  }

@@ -42,11 +42,9 @@ module.exports.deleteCard = (req, res) => {
             if (JSON.stringify(card.owner) !== JSON.stringify(req.user._id)) {
                 return res.status(403).send({ message: 'Невозможно удалить данную карточку' });
             }
-            //  Card.findByIdAndRemove(req.params.cardId);
             card.remove();
             res.status(200).send({ data: card })
         })
-        //  .then((card) =>res.status(200).send({ data: card }))
         .catch((err) => {
             if (err.name === "CastError") {
                 return res.status(400).send({ message: 'Ошибка в id карточки' });
@@ -54,24 +52,6 @@ module.exports.deleteCard = (req, res) => {
             return res.status(500).send({ message: 'На сервере произошла ошибка' });
         });
 };
-
-/*module.exports.deleteCard = async(req, res) => {
-try {
-    const card = await Card.findById(req.params.cardId);
-    if (!card) {
-        return res.status(400).send({ message: 'Такой карточки нет!' });
-    }
-    if (JSON.stringify(card.owner) !== JSON.stringify(req.params.cardId)) {
-        return res.status(404).send({ message: 'Невозможно удалить данную карточку', err });
-    }
-    // const newCard = await Card.findByIdAndRemove(req.params.cardId, req.body);
-
-    // req.body, { new: true, runValidators: true });
-    res.send(card);
-} catch (err) {
-    return res.status(500).send({ message: 'На сервере произошла ошибка', err });
-}
-}*/
 
 module.exports.likeCard = (req, res) => {
     Card.findByIdAndUpdate(

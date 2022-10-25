@@ -17,7 +17,6 @@ router.post('/', createUser);
 router.get('/:id', getUserById);
 
 router.patch('/:id', updateProfile);
-//router.patch('/:id', updateUser);
 
 router.patch('/:id/avatar', updateAvatar);
 
