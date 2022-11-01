@@ -12,7 +12,7 @@ const {
 
 router.get('/', auth, getUser);
 
-router.post('/', createUser);
+router.post('/', auth, createUser);
 
 router.get('/:id', auth, getUserById);
 
