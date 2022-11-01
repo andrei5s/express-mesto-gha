@@ -1,17 +1,51 @@
 const mongoose = require('mongoose');
-const User = require('../models/user');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const createUser = (req, res) => {
-  User.create(req.body)
+const User = require('../models/user');
+const ExistError = require('../errors/existerr');
+const BadRequestError = require('../errors/bedrequserror');
+const BadDataError = require('../errors/beddataerr');
+const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
+
+const createUser = (req, res, next) => {
+  const {
+    email, password, name, about, avatar,
+  } = req.body;
+
+  if (!email || !password) {
+    throw new BadRequestError('Нужны почта и пароль');
+  }
+
+  User.findOne({ email })
     .then((user) => {
-      res.status(201).send(user);
-    })
-    .catch((err) => {
-      if (err instanceof mongoose.Error.ValidationError) {
-        return res.status(400).send({ message: 'Ошибка валидации' });
+      if (user) {
+        throw new ExistError('Такой пользователь уже существует!');
       }
-      return res.status(500).send({ message: 'На сервере произошла ошибка' });
-    });
+      return bcrypt.hash(password, 10);
+    })
+    .then((hash) => User.create({
+      email, password: hash, name, about, avatar,
+    }))
+    .then((user) => res
+      .status(STATUS_CREATED)
+      .send({ _id: user._id, email: user.email }))
+    .catch(next);
+};
+
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      res.send({
+        token: jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' }),
+      });
+    })
+    .catch(() => {
+      throw new BadDataError('Неправильные почта или пароль');
+    })
+    .catch(next);
 };
 
 // eslint-disable-next-line consistent-return
@@ -83,4 +117,5 @@ module.exports = {
   getUserById,
   updateProfile,
   updateAvatar,
+  login,
 };
