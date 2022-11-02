@@ -16,6 +16,7 @@ const checkProfile = celebrate({
 
 const checkAvatar = celebrate({
   body: Joi.object().keys({
+    // eslint-disable-next-line no-useless-escape
     avatar: Joi.string().required().pattern(/https?:\/\/(www)?[\-\.~:\/\?#\[\]@!$&'\(\)*\+,;=\w]+#?\b/),
   }),
 });
@@ -23,6 +24,7 @@ const checkAvatar = celebrate({
 const checkNewCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
+    // eslint-disable-next-line no-useless-escape
     link: Joi.string().required().pattern(/https?:\/\/(www)?[\-\.~:\/\?#\[\]@!$&'\(\)*\+,;=\w]+#?\b/),
   }),
 });
@@ -40,5 +42,10 @@ const checkDeletedCardId = celebrate({
 });
 
 module.exports = {
-  checkUser, checkProfile, checkAvatar, checkNewCard, checkCardId, checkDeletedCardId,
+  checkUser,
+  checkProfile,
+  checkAvatar,
+  checkNewCard,
+  checkCardId,
+  checkDeletedCardId,
 };
