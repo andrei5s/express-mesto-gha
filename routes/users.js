@@ -11,7 +11,7 @@ const {
 
 } = require('../controllers/users');
 
-router.get('/', getUser);
+router.get('/', auth, getUser);
 
 // router.post('/', createUser);
 

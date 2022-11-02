@@ -32,10 +32,11 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
+app.use(routes);
 app.post('/signin', checkUser, login);
 app.post('/signup', checkUser, createUser);
 app.use(express.json());
-app.use(routes);
+
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'Указанный путь не существует' });
 });
