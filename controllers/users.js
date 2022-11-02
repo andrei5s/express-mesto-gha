@@ -6,6 +6,7 @@ const User = require('../models/user');
 const ExistError = require('../errors/existerr');
 const BadRequestError = require('../errors/bedrequserror');
 const BadDataError = require('../errors/beddataerr');
+const NotFoundError = require('../errors/not-found-err');
 const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
 
 const createUser = (req, res, next) => {
@@ -58,7 +59,7 @@ const getUser = async (req, res) => {
   }
 };
 
-const getUserById = (req, res) => {
+/*const getUserById = (req, res) => {
   User.findById(req.params.id).orFail(new Error('NotFound'))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -70,6 +71,17 @@ const getUserById = (req, res) => {
       }
       return res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
+};*/
+
+const getUserById = (req, res, next) => {
+  User.findById(req.user._id).select('+password')
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      res.status(STATUS_OK).send({ data: user });
+    })
+    .catch(next);
 };
 
 const updateProfile = (req, res) => {
