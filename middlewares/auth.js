@@ -5,7 +5,7 @@ const handleAuthError = () => {
   throw new BadDataError('Необходима авторизация');
 };
 
-//const extractBearerToken = (header) => header.replace('Bearer ', '');
+// const extractBearerToken = (header) => header.replace('Bearer ', '');
 
 // eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
     return handleAuthError(res);
   }
 
-  //const token = extractBearerToken(authorization);
+  // const token = extractBearerToken(authorization);
   const token = authorization.replace('Bearer ', '');
   let payload;
 
