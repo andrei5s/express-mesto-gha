@@ -13,7 +13,12 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/mestodb');
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+});
 
 // для собирания JSON-формата
 app.use(bodyParser.json());
@@ -26,7 +31,7 @@ app.post('/signup', checkUser, createUser);
 app.use(express.json());
 app.use(routes);
 app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Указанный путь не существует' });
+    res.status(404).send({ message: 'Указанный путь не существует' });
 });
 
 // Обработка ошибок celebrate
@@ -35,12 +40,12 @@ app.use(errors());
 // Централизованная обработка ошибок
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  const { statusCode = ERROR_SERVER, message } = err;
-  const errorMessage = (statusCode === ERROR_SERVER) ? 'Ошибка на сервере' : message;
-  res.status(statusCode).send({ message: errorMessage });
+    const { statusCode = ERROR_SERVER, message } = err;
+    const errorMessage = (statusCode === ERROR_SERVER) ? 'Ошибка на сервере' : message;
+    res.status(statusCode).send({ message: errorMessage });
 });
 
 app.listen(PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`App listening on port ${PORT}`);
+    // eslint-disable-next-line no-console
+    console.log(`App listening on port ${PORT}`);
 });
