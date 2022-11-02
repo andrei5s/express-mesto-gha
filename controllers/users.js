@@ -59,7 +59,7 @@ const getUser = async (req, res) => {
   }
 };
 
-/*const getUserById = (req, res) => {
+const getUserById = (req, res) => {
   User.findById(req.params.id).orFail(new Error('NotFound'))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -71,9 +71,9 @@ const getUser = async (req, res) => {
       }
       return res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
-};*/
+};
 
-const getUserById = (req, res, next) => {
+/*const getUserById = (req, res, next) => {
   User.findById(req.user._id).select('+password')
     .then((user) => {
       if (!user) {
@@ -82,7 +82,7 @@ const getUserById = (req, res, next) => {
       res.status(STATUS_OK).send({ data: user });
     })
     .catch(next);
-};
+};*/
 
 const updateProfile = (req, res) => {
   const { name, about } = req.body;
