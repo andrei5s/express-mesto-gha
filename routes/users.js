@@ -8,13 +8,12 @@ const {
   getUserById,
   updateProfile,
   updateAvatar,
-  createUser,
 
 } = require('../controllers/users');
 
 router.get('/', auth, getUser);
 
-router.post('/', auth, createUser);
+// router.post('/', auth, createUser);
 
 router.get('/:id', auth, getUserById);
 

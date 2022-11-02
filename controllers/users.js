@@ -57,18 +57,19 @@ const login = (req, res, next) => {
 };
 
 // eslint-disable-next-line consistent-return
-/* const getUser = async(req, res) => {
+/* const getUser = async(req, res, next) => {
   try {
     const users = await User.find({});
     res.send({ data: users });
-  } catch (err) {
-    return res.status(500).send({ message: 'На сервере произошла ошибка' });
-  }
+  } // catch (err) {
+    // return res.status(500).send({ message: 'На сервере произошла ошибка' });
+ // }
+ catch(next)
 }; */
 
 const getUser = (req, res, next) => {
   User.find({})
-    .then((users) => res.status(STATUS_OK).send({ data: users }))
+    .then((users) => res.status(STATUS_OK).send(users))
     .catch(next);
 };
 
