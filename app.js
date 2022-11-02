@@ -32,9 +32,10 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.use(routes);
 app.post('/signin', checkUser, login);
 app.post('/signup', checkUser, createUser);
+app.use(routes);
+
 app.use(express.json());
 
 app.use('*', (req, res) => {
