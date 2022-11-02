@@ -3,7 +3,7 @@ const { checkProfile, checkAvatar } = require('../middlewares/validation');
 const auth = require('../middlewares/auth');
 
 const {
- // createUser,
+  // createUser,
   getUser,
   getUserById,
   updateProfile,
@@ -11,14 +11,14 @@ const {
 
 } = require('../controllers/users');
 
-router.get('/', getUser);
+router.get('/', auth, getUser);
 
 //router.post('/', createUser);
 
-router.get('/:id', getUserById);
+router.get('/:id', auth, getUserById);
 
-router.patch('/:id', checkProfile, updateProfile);
+router.patch('/:id', auth, checkProfile, updateProfile);
 
-router.patch('/:id/avatar', checkAvatar, updateAvatar);
+router.patch('/:id/avatar', auth, checkAvatar, updateAvatar);
 
 module.exports = router;
