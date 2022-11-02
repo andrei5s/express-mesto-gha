@@ -11,7 +11,11 @@ const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
 
 const createUser = (req, res, next) => {
   const {
-    email, password, name, about, avatar,
+    email,
+    password,
+    name,
+    about,
+    avatar,
   } = req.body;
 
   if (!email || !password) {
@@ -26,7 +30,11 @@ const createUser = (req, res, next) => {
       return bcrypt.hash(password, 10);
     })
     .then((hash) => User.create({
-      email, password: hash, name, about, avatar,
+      email,
+      password: hash,
+      name,
+      about,
+      avatar,
     }))
     .then((user) => res
       .status(STATUS_CREATED)
@@ -50,16 +58,22 @@ const login = (req, res, next) => {
 };
 
 // eslint-disable-next-line consistent-return
-const getUser = async (req, res) => {
+/*const getUser = async(req, res) => {
   try {
     const users = await User.find({});
     res.send({ data: users });
   } catch (err) {
     return res.status(500).send({ message: 'На сервере произошла ошибка' });
   }
+};*/
+
+const getUser = (req, res, next) => {
+  User.find({})
+    .then((users) => res.status(STATUS_OK).send({ data: users }))
+    .catch(next);
 };
 
-const getUserById = (req, res) => {
+/*const getUserById = (req, res) => {
   User.findById(req.params.id).orFail(new Error('NotFound'))
     .then((user) => res.send(user))
     .catch((err) => {
@@ -71,10 +85,10 @@ const getUserById = (req, res) => {
       }
       return res.status(500).send({ message: 'На сервере произошла ошибка' });
     });
-};
+};*/
 
-/*const getUserById = (req, res, next) => {
-  User.findById(req.user._id).select('+password')
+const getUserById = (req, res, next) => {
+  User.findById(req.params.id).select('+password')
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
@@ -82,7 +96,7 @@ const getUserById = (req, res) => {
       res.status(STATUS_OK).send({ data: user });
     })
     .catch(next);
-};*/
+};
 
 const updateProfile = (req, res) => {
   const { name, about } = req.body;
@@ -108,7 +122,7 @@ const updateProfile = (req, res) => {
 const updateAvatar = (req, res) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
-  // eslint-disable-next-line consistent-return
+    // eslint-disable-next-line consistent-return
     .then((user) => {
       if (!user) {
         return res.status(404).send({ message: 'Пользователь не найден' });
