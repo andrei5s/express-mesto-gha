@@ -93,7 +93,7 @@ const getUserById = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.status(STATUS_OK).send({ data: user });
+      res.status(STATUS_OK).send(user);
     })
     .catch(next);
 };
@@ -102,23 +102,7 @@ const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   // eslint-disable-next-line max-len
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-  // eslint-disable-next-line consistent-return
-  /* .then((user) => {
-            if (!user) {
-                return res.status(404).send({ message: 'Пользователь не найден' });
-            }
-            res.status(200).send({ data: user });
-        })
-        .catch((err) => {
-            if (err instanceof mongoose.Error.CastError) {
-                return res.status(400).send({ message: 'Не корректный _id' });
-            }
-            if (err instanceof mongoose.Error.ValidationError) {
-                return res.status(400).send({ message: 'Ошибка валидации' });
-            }
-            return res.status(500).send({ message: 'На сервере произошла ошибка' });
-        }); */
-    .then((user) => res.status(STATUS_OK).send({ user }))
+    .then((user) => res.status(STATUS_OK).send({ data: user }))
     .catch(next);
 };
 
