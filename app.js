@@ -28,7 +28,7 @@ app.get('/crash-test', () => {
 });
 
 app.post('/signin', checkUser, checkProfile, checkAvatar, login);
-app.post('/signup', checkUser, createUser);
+app.post('/signup', checkUser, checkProfile, checkAvatar, createUser);
 app.use(routes);
 
 app.use(express.json());
