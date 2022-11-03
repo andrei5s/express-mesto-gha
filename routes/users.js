@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { checkProfile, checkAvatar } = require('../middlewares/validation');
+const { checkProfile, checkAvatar, checkUserById } = require('../middlewares/validation');
 const auth = require('../middlewares/auth');
 
 const {
@@ -15,7 +15,7 @@ router.get('/', auth, getUser);
 
 // router.post('/', auth, createUser);
 
-router.get('/:id', auth, getUserById);
+router.get('/:id', auth, checkUserById, getUserById);
 
 router.patch('/:id', auth, checkProfile, updateProfile);
 

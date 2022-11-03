@@ -32,6 +32,12 @@ const checkAvatar = celebrate({
   }),
 });
 
+const checkUserById = celebrate({
+  params: Joi.object().keys({
+    id: Joi.string().alphanum().length(24),
+  }),
+});
+
 const checkNewCard = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
@@ -58,6 +64,7 @@ module.exports = {
   checkLogin,
   checkProfile,
   checkAvatar,
+  checkUserById,
   checkNewCard,
   checkCardId,
   checkDeletedCardId,
