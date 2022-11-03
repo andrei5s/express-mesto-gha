@@ -118,7 +118,7 @@ const updateProfile = (req, res, next) => {
             }
             return res.status(500).send({ message: 'На сервере произошла ошибка' });
         }); */
-    .then((user) => res.status(STATUS_OK).send({ data: user }))
+    .then((user) => res.status(STATUS_OK).send({ user }))
     .catch(next);
 };
 
