@@ -37,8 +37,8 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res
       .status(STATUS_CREATED)
-      .send({ _id: user._id, email: user.email }))
-    //  .send(user))
+    // .send({ _id: user._id, email: user.email }))
+      .send(user))
     .catch(next);
 };
 
