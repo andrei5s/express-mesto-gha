@@ -59,20 +59,21 @@ const login = (req, res, next) => {
 };
 
 // eslint-disable-next-line consistent-return
-/* const getUser = async(req, res, next) => {
+const getUser = async (req, res, next) => {
   try {
     const users = await User.find({});
     res.send({ data: users });
-  } // catch (err) {
+  } catch (err) {
     // return res.status(500).send({ message: 'На сервере произошла ошибка' });
- // }
-}; */
+    next(err);
+  }
+};
 
-const getUser = (req, res, next) => {
+/* const getUser = (req, res, next) => {
   User.find({})
     .then((users) => res.status(STATUS_OK).send(users))
     .catch(next);
-};
+}; */
 
 /* const getUserById = (req, res) => {
   User.findById(req.params.id).orFail(new Error('NotFound'))
