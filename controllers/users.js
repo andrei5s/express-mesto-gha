@@ -101,7 +101,7 @@ const getUserById = (req, res, next) => {
 const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   // eslint-disable-next-line max-len
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true, upsert: true })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
   // eslint-disable-next-line consistent-return
   /* .then((user) => {
             if (!user) {

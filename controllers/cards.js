@@ -40,23 +40,6 @@ module.exports.getCards = (req, res, next) => {
 
 module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
-  // eslint-disable-next-line consistent-return
-  /* .then((card) => {
-                  if (!card) {
-                      return res.status(404).send({ message: 'Такой карточки нет!' });
-                  }
-                  if (JSON.stringify(card.owner) !== JSON.stringify(req.user._id)) {
-                    return res.status(403).send({ message: 'Невозможно удалить данную карточку' });
-                  }
-                  card.remove();
-                  res.status(200).send({ data: card });
-              })
-              .catch((err) => {
-                  if (err.name === 'CastError') {
-                      return res.status(400).send({ message: 'Ошибка в id карточки' });
-                  }
-                  return res.status(500).send({ message: 'На сервере произошла ошибка' });
-              }); */
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Такой карточки нет!');
