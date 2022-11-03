@@ -6,7 +6,7 @@ const { errors } = require('celebrate');
 
 const routes = require('./routes/index');
 const { createUser, login } = require('./controllers/users');
-const { checkUser } = require('./middlewares/validation');
+const { checkUser, checkProfile, checkAvatar } = require('./middlewares/validation');
 const { ERROR_SERVER } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
@@ -27,8 +27,8 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signin', checkUser, login);
-app.post('/signup', checkUser, createUser);
+app.post('/signin', checkUser, checkProfile, checkAvatar, login);
+app.post('/signup', checkUser, checkProfile, checkAvatar, createUser);
 app.use(routes);
 
 app.use(express.json());
