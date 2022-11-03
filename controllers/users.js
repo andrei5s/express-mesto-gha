@@ -97,18 +97,19 @@ const getUserById = (req, res, next) => {
       res.status(STATUS_OK).send(user);
     })
     .catch(next); */
-  User.findById(req.params.id).select('+password')
-    // .then((user) => res.send(user))
-    .then((user) => {
+  User.findById(req.params.id).orFail(new Error('NotFound')).select('+password')
+    .then((user) => res.send(user))
+    /* .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
       res.status(STATUS_OK).send(user);
-    })
+    }) */
     .catch((err) => {
-      /* if (err.message === 'NotFound') {
-        return res.status(404).send({ message: 'Пользователь не найден' });
-      } */
+      if (err.message === 'NotFound') {
+        // return res.status(404).send({ message: 'Пользователь не найден' });
+        throw new NotFoundError('Пользователь не найден');
+      }
       if (err instanceof mongoose.Error.CastError) {
         // return res.status(400).send({ message: 'Не корректный _id' });
         throw new BadRequestError('Не корректный _id');
