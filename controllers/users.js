@@ -97,7 +97,7 @@ const getUserById = (req, res, next) => {
       res.status(STATUS_OK).send(user);
     })
     .catch(next); */
-  User.findById(req.params.id).orFail(new Error('NotFound')).select('+password')
+  User.findById(req.params.id).orFail(new Error('NotFound'))
     .then((user) => res.send(user))
     /* .then((user) => {
       if (!user) {
