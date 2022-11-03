@@ -31,7 +31,7 @@ app.post('/signin', checkUser, checkProfile, checkAvatar, login);
 app.post('/signup', checkUser, checkProfile, checkAvatar, createUser);
 app.use(routes);
 
-app.use(express.json());
+// app.use(express.json());
 
 app.use('*', (req, res) => {
   res.status(404).send({ message: 'Указанный путь не существует' });
