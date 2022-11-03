@@ -27,8 +27,8 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signin', checkUser, checkProfile, checkAvatar, login);
-app.post('/signup', checkUser, checkProfile, checkAvatar, createUser);
+app.post('/signin', checkUser, login);
+app.post('/signup', checkUser, createUser);
 app.use(routes);
 
 // app.use(express.json());
