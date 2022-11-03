@@ -64,7 +64,6 @@ const login = (req, res, next) => {
   } // catch (err) {
     // return res.status(500).send({ message: 'На сервере произошла ошибка' });
  // }
- catch(next)
 }; */
 
 const getUser = (req, res, next) => {

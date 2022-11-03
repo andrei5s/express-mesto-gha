@@ -37,7 +37,8 @@ const checkCardId = celebrate({
 
 const checkDeletedCardId = celebrate({
   params: Joi.object().keys({
-    id: Joi.string().alphanum().length(24),
+  // id: Joi.string().alphanum().length(24),
+    cardId: Joi.string().alphanum().length(24),
   }),
 });
 
