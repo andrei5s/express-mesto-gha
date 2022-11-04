@@ -69,7 +69,7 @@ const getUser = async (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  User.findById(req.params.id).select('+password')
+  User.findById(req.params.id)
   // .then((user) => res.send(user))
     .then((user) => {
       if (!user) {
