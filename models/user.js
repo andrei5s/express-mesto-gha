@@ -67,4 +67,17 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     });
 };
 
+function showOnlyWhiteListFields(doc, ret) {
+  const retJson = {
+    name: ret.name,
+    about: ret.about,
+    avatar: ret.avatar,
+    email: ret.email,
+    _id: ret._id,
+  };
+  return retJson;
+}
+
+userSchema.set('toJSON', { transform: showOnlyWhiteListFields });
+
 module.exports = mongoose.model('user', userSchema);
