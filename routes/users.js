@@ -15,7 +15,7 @@ router.get('/', getUser);
 
 // router.post('/', auth, createUser);
 
-router.get('/:id', checkUserById, getUserById);
+router.get('/me', checkUserById, getUserById);
 
 router.patch('/me', checkProfile, updateProfile);
 
