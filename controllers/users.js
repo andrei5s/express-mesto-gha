@@ -40,7 +40,12 @@ const createUser = (req, res, next) => {
       .status(STATUS_CREATED)
       // .send({ _id: user._id, email: user.email }))
       .send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.code === 11000) {
+        throw new ExistError('Такой пользователь уже существует');
+      }
+      next(err);
+    });
 };
 
 const login = (req, res, next) => {
