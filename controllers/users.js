@@ -4,11 +4,22 @@ const mongoose = require('mongoose');
 
 // const { hash } = require('bcrypt');
 const User = require('../models/user');
-const ExistError = require('../errors/existerr');
+// const ExistError = require('../errors/existerr');
 const BadRequestError = require('../errors/bedrequserror');
 const BadDataError = require('../errors/beddataerr');
 const NotFoundError = require('../errors/not-found-err');
 const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
+
+function addCookieToResponse(res, user) {
+  const token = jwt.sign(
+    { _id: user._id },
+    process.env.NODE_ENV === 'production' ? process.env.JWT_SECRET : 'key',
+    { expiresIn: '7d' },
+  );
+  res
+    .status(200)
+    .cookie('jwt', token, { maxAge: 604800000, httpOnly: true, sameSite: true });
+}
 
 function usersPasswordHandler(pass) {
   if (!pass) {
@@ -58,7 +69,7 @@ function usersPasswordHandler(pass) {
     });
 }; */
 
-const createUser = (req, res, next) => {
+/* const createUser = (req, res, next) => {
   usersPasswordHandler(req.body.password)
     .then((hash) => User.create({
       name: req.body.name,
@@ -76,6 +87,29 @@ const createUser = (req, res, next) => {
         throw new ExistError('Такой пользователь уже существует');
       }
       next(err);
+    });
+}; */
+
+const createUser = (req, res, next) => {
+  usersPasswordHandler(req.body.password)
+    .then((hash) => User.create({
+      name: req.body.name,
+      about: req.body.about,
+      avatar: req.body.avatar,
+      email: req.body.email,
+      password: hash,
+    }))
+    .then((user) => {
+      addCookieToResponse(res, user);
+      res.status(STATUS_CREATED).send(user);
+    })
+    .catch((err) => {
+      res.clearCookie('jwt');
+      if (err.name === 'MongoError' && err.code === 11000) {
+        next(new BadRequestError('user validation failed: email: Уже существует пользователь с данным email'));
+      } else {
+        next(err);
+      }
     });
 };
 
