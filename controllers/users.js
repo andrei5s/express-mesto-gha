@@ -2,13 +2,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
+// const { hash } = require('bcrypt');
 const User = require('../models/user');
 const ExistError = require('../errors/existerr');
 const BadRequestError = require('../errors/bedrequserror');
 const BadDataError = require('../errors/beddataerr');
 const NotFoundError = require('../errors/not-found-err');
 const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
-const { hash } = require('bcrypt');
 
 const createUser = (req, res, next) => {
   const {
@@ -29,7 +29,6 @@ const createUser = (req, res, next) => {
       }
       return bcrypt.hash(password, 10);
     })
-    // eslint-disable-next-line no-shadow
     .then((hash) => User.create({
       email,
       password: hash,
