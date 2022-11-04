@@ -15,18 +15,6 @@ const app = express();
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
-// для собирания JSON-формата
-app.use(bodyParser.json());
-// для приёма веб-страниц внутри POST-запроса
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
-
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
 app.post('/signup', checkUser, createUser);
 app.post('/signin', checkLogin, login);
 app.use(routes);
