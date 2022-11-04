@@ -15,10 +15,10 @@ router.get('/', getUser);
 
 // router.post('/', auth, createUser);
 
-router.get('/me', checkUserById, getUserById);
+router.get('/:id', checkUserById, getUserById);
 
-router.patch('/me', checkProfile, updateProfile);
+router.patch('/:id', checkProfile, updateProfile);
 
-router.patch('/me/avatar', checkAvatar, updateAvatar);
+router.patch('/:id/avatar', checkAvatar, updateAvatar);
 
 module.exports = router;
