@@ -6,14 +6,14 @@ const BadDataError = require('../errors/beddataerr');
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: true,
+    required: true,
     minlength: 2,
     maxlength: 30,
     default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    // required: true,
+    required: true,
     minlength: 2,
     maxlength: 30,
     default: 'Исследователь',
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     minlength: 2,
-    // required: true,
+    required: true,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator(v) {
@@ -66,18 +66,5 @@ userSchema.statics.findUserByCredentials = function (email, password) {
         });
     });
 };
-
-function showOnlyWhiteListFields(doc, ret) {
-  const retJson = {
-    name: ret.name,
-    about: ret.about,
-    avatar: ret.avatar,
-    email: ret.email,
-    _id: ret._id,
-  };
-  return retJson;
-}
-
-userSchema.set('toJSON', { transform: showOnlyWhiteListFields });
 
 module.exports = mongoose.model('user', userSchema);
