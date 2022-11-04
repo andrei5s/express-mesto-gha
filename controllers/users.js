@@ -98,18 +98,18 @@ const getUserById = (req, res, next) => {
     })
     .catch(next); */
   User.findById(req.params.id).orFail(new Error('NotFound'))
-    .then((user) => res.send(user))
-    /* .then((user) => {
+  // .then((user) => res.send(user))
+    .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
       res.status(STATUS_OK).send(user);
-    }) */
+    })
     .catch((err) => {
-      if (err.message === 'NotFound') {
-        // return res.status(404).send({ message: 'Пользователь не найден' });
-        throw new NotFoundError('Пользователь не найден');
-      }
+    // if (err.message === 'NotFound') {
+      // return res.status(404).send({ message: 'Пользователь не найден' });
+      // throw new NotFoundError('Пользователь не найден');
+    // }
       if (err instanceof mongoose.Error.CastError) {
         // return res.status(400).send({ message: 'Не корректный _id' });
         throw new BadRequestError('Не корректный _id');
@@ -131,20 +131,22 @@ const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true, upsert: true })
   // eslint-disable-next-line consistent-return
-  /* .then((user) => {
-            if (!user) {
-                return res.status(404).send({ message: 'Пользователь не найден' });
-            }
-            res.send({ data: user });
-        })
-        .catch((err) => {
-            if (err instanceof mongoose.Error.ValidationError) {
-                return res.status(400).send({ message: 'Ошибка валидации' });
-            }
-            return res.status(500).send({ message: 'На сервере произошла ошибка' });
-        }); */
-    .then((user) => res.status(STATUS_OK).send({ data: user }))
-    .catch(next);
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({ message: 'Пользователь не найден' });
+      }
+      res.send({ data: user });
+    })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.ValidationError) {
+        // return res.status(400).send({ message: 'Ошибка валидации' });
+        throw new BadRequestError('Ошибка валидации');
+      }
+      // return res.status(500).send({ message: 'На сервере произошла ошибка' });
+      next(err);
+    });
+  // .then((user) => res.status(STATUS_OK).send({ data: user }))
+  // .catch(next);
 };
 
 module.exports = {
