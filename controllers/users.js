@@ -38,8 +38,8 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res
       .status(STATUS_CREATED)
-    // .send({ _id: user._id, email: user.email }))
-      .send(user))
+      .send({ _id: user._id, email: user.email }))
+    // .send(user))
     .catch(next);
 };
 
@@ -68,36 +68,8 @@ const getUser = async (req, res, next) => {
   }
 };
 
-/* const getUser = (req, res, next) => {
-  User.find({})
-    .then((users) => res.status(STATUS_OK).send(users))
-    .catch(next);
-}; */
-
-/* const getUserById = (req, res) => {
-  User.findById(req.params.id).orFail(new Error('NotFound'))
-    .then((user) => res.send(user))
-    .catch((err) => {
-      if (err.message === 'NotFound') {
-        return res.status(404).send({ message: 'Пользователь не найден' });
-      }
-      if (err instanceof mongoose.Error.CastError) {
-        return res.status(400).send({ message: 'Не корректный _id' });
-      }
-      return res.status(500).send({ message: 'На сервере произошла ошибка' });
-    });
-}; */
-
 const getUserById = (req, res, next) => {
-/* User.findById(req.params.id).select('+password')
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Пользователь не найден');
-      }
-      res.status(STATUS_OK).send(user);
-    })
-    .catch(next); */
-  User.findById(req.params.id).orFail(new Error('NotFound'))
+  User.findById(req.params.id).select('+password')
   // .then((user) => res.send(user))
     .then((user) => {
       if (!user) {
@@ -106,10 +78,6 @@ const getUserById = (req, res, next) => {
       res.status(STATUS_OK).send(user);
     })
     .catch((err) => {
-    // if (err.message === 'NotFound') {
-      // return res.status(404).send({ message: 'Пользователь не найден' });
-      // throw new NotFoundError('Пользователь не найден');
-    // }
       if (err instanceof mongoose.Error.CastError) {
         // return res.status(400).send({ message: 'Не корректный _id' });
         throw new BadRequestError('Не корректный _id');
@@ -145,8 +113,6 @@ const updateAvatar = (req, res, next) => {
       // return res.status(500).send({ message: 'На сервере произошла ошибка' });
       next(err);
     });
-  // .then((user) => res.status(STATUS_OK).send({ data: user }))
-  // .catch(next);
 };
 
 module.exports = {
