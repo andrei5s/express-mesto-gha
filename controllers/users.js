@@ -38,8 +38,10 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => res
       .status(STATUS_CREATED)
-      // .send({ _id: user._id, email: user.email }))
-      .send(user))
+      .send({
+        _id: user._id, email: user.email, name: user.name, about: user.about,
+      }))
+    // .send(user))
     .catch((err) => {
       if (err.code === 11000) {
         throw new ExistError('Такой пользователь уже существует');
