@@ -8,6 +8,7 @@ const BadRequestError = require('../errors/bedrequserror');
 const BadDataError = require('../errors/beddataerr');
 const NotFoundError = require('../errors/not-found-err');
 const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
+const { hash } = require('bcrypt');
 
 const createUser = (req, res, next) => {
   const {
@@ -21,7 +22,6 @@ const createUser = (req, res, next) => {
   if (!email || !password) {
     throw new BadRequestError('Нужны почта и пароль');
   }
-
   User.findOne({ email })
     .then((user) => {
       if (user) {
@@ -29,6 +29,7 @@ const createUser = (req, res, next) => {
       }
       return bcrypt.hash(password, 10);
     })
+    // eslint-disable-next-line no-shadow
     .then((hash) => User.create({
       email,
       password: hash,
