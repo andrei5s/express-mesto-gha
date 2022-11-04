@@ -119,6 +119,25 @@ const getUserById = (req, res, next) => {
     });
 };
 
+const getCurrentUser = (req, res, next) => {
+  User.findById(req.user)
+  // .then((user) => res.send(user))
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      res.status(STATUS_OK).send(user);
+    })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError) {
+        // return res.status(400).send({ message: 'Не корректный _id' });
+        throw new BadRequestError('Не корректный _id');
+      }
+      // return res.status(500).send({ message: 'На сервере произошла ошибка' });
+      next(err);
+    });
+};
+
 /* const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   // eslint-disable-next-line max-len
@@ -181,4 +200,5 @@ module.exports = {
   updateProfile,
   updateAvatar,
   login,
+  getCurrentUser,
 };
