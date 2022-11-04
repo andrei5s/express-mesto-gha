@@ -72,7 +72,7 @@ const createUser = (req, res, next) => {
       // .send({ _id: user._id, email: user.email }))
       .send(user))
     .catch((err) => {
-      if (err.name === 'MongoError' && err.code === 11000) {
+      if (err.code === 11000) {
         throw new ExistError('Такой пользователь уже существует');
       }
       next(err);
