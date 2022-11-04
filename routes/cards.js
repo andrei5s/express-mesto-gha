@@ -1,5 +1,4 @@
 const router = require('express').Router();
-// const auth = require('../middlewares/auth');
 
 const {
   getCards,
@@ -13,7 +12,7 @@ const {
   checkNewCard,
   checkCardId,
   checkDeletedCardId,
-} = require('../middlewares/validation');
+} = require('../validation/validation');
 
 router.get('/', getCards);
 

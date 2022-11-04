@@ -12,15 +12,6 @@ module.exports.createCard = (req, res, next) => {
   } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
-  /* .then((user) => {
-                  res.status(201).send({ data: user });
-              })
-              .catch((err) => {
-                  if (err.name.includes('ValidationError')) {
-                      return res.status(400).send({ message: 'Ошибка валидации' });
-                  }
-                  return res.status(500).send({ message: 'На сервере произошла ошибка' });
-              }); */
     .then((user) => res.status(STATUS_CREATED).send({ data: user }))
     .catch((err) => {
       if (err.name.includes('ValidationError')) {
@@ -32,8 +23,6 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-  /* .then((data) => res.status(200).send(data))
-              .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' })); */
     .then((data) => res.status(STATUS_OK).send(data))
     .catch(next);
 };
@@ -47,7 +36,6 @@ module.exports.deleteCard = (req, res, next) => {
       if (JSON.stringify(card.owner) !== JSON.stringify(req.user._id)) {
         throw new ForbiddenError('Невозможно удалить данную карточку');
       }
-      // return Card.findByIdAndRemove(id);
       card.remove();
     })
     .then((card) => res.status(STATUS_OK).send({ data: card }))
@@ -56,18 +44,6 @@ module.exports.deleteCard = (req, res, next) => {
 
 module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
-  /* .then((card) => {
-                  if (!card) {
-                      return res.status(404).send({ message: 'Такой карточки нет!' });
-                  }
-                  return res.status(200).send({ data: card });
-              })
-              .catch((err) => {
-                  if (err.name === 'CastError') {
-                      return res.status(400).send({ message: 'Ошибка в id карточки' });
-                  }
-                  return res.status(500).send({ message: 'На сервере произошла ошибка' });
-              }); */
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Такой карточки нет!');
@@ -79,18 +55,6 @@ module.exports.likeCard = (req, res, next) => {
 
 module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
-  /* .then((card) => {
-                  if (!card) {
-                      return res.status(404).send({ message: 'Такой карточки нет!' });
-                  }
-                  return res.status(200).send({ data: card });
-              })
-              .catch((err) => {
-                  if (err.name === 'CastError') {
-                      return res.status(400).send({ message: 'Ошибка в id карточки' });
-                  }
-                  return res.status(500).send({ message: 'На сервере произошла ошибка' });
-              }); */
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Такой карточки нет!');

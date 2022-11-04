@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
-// const { hash } = require('bcrypt');
 const User = require('../models/user');
 const ExistError = require('../errors/existerr');
 const BadRequestError = require('../errors/bedrequserror');
@@ -41,7 +40,6 @@ const createUser = (req, res, next) => {
       .send({
         email: user.email, name: user.name, about: user.about, avatar: user.avatar,
       }))
-    // .send(user))
     .catch((err) => {
       if (err.code === 11000) {
         throw new ExistError('Такой пользователь уже существует');
@@ -49,27 +47,6 @@ const createUser = (req, res, next) => {
       next(err);
     });
 };
-
-/* const createUser = (req, res, next) => {
-  usersPasswordHandler(req.body.password)
-    .then((hash) => User.create({
-      name: req.body.name,
-      about: req.body.about,
-      avatar: req.body.avatar,
-      email: req.body.email,
-      password: hash,
-    }))
-    .then((user) => res
-      .status(STATUS_CREATED)
-      // .send({ _id: user._id, email: user.email }))
-      .send(user))
-    .catch((err) => {
-      if (err.code === 11000) {
-        throw new ExistError('Такой пользователь уже существует');
-      }
-      next(err);
-    });
-}; */
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -96,15 +73,8 @@ const getUser = async (req, res, next) => {
   }
 };
 
-/* const getUser = (req, res, next) => {
-  User.find({})
-    .then((users) => res.status(STATUS_OK).send(users))
-    .catch(next);
-}; */
-
 const getUserById = (req, res, next) => {
   User.findById(req.params.id)
-  // .then((user) => res.send(user))
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
@@ -113,17 +83,14 @@ const getUserById = (req, res, next) => {
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        // return res.status(400).send({ message: 'Не корректный _id' });
         throw new BadRequestError('Не корректный _id');
       }
-      // return res.status(500).send({ message: 'На сервере произошла ошибка' });
       next(err);
     });
 };
 
 const getCurrentUser = (req, res, next) => {
   User.findById(req.user)
-  // .then((user) => res.send(user))
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
@@ -132,21 +99,11 @@ const getCurrentUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        // return res.status(400).send({ message: 'Не корректный _id' });
         throw new BadRequestError('Не корректный _id');
       }
-      // return res.status(500).send({ message: 'На сервере произошла ошибка' });
       next(err);
     });
 };
-
-/* const updateProfile = (req, res, next) => {
-  const { name, about } = req.body;
-  // eslint-disable-next-line max-len
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    .then((user) => res.status(STATUS_OK).send({ data: user }))
-    .catch(next);
-}; */
 
 const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
@@ -154,22 +111,17 @@ const updateProfile = (req, res, next) => {
     // eslint-disable-next-line consistent-return
     .then((user) => {
       if (!user) {
-        // return res.status(404).send({ message: 'Пользователь не найден' });
         throw new NotFoundError('Пользователь не найден');
       }
-      // res.status(200).send({ data: user });
       res.status(STATUS_OK).send(user);
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        // return res.status(400).send({ message: 'Не корректный _id' });
         throw new BadRequestError('Не корректный _id');
       }
       if (err instanceof mongoose.Error.ValidationError) {
-        // return res.status(400).send({ message: 'Ошибка валидации' });
         throw new BadRequestError('Ошибка валидации');
       }
-      // return res.status(500).send({ message: 'На сервере произошла ошибка' });
       next(err);
     });
 };
@@ -180,17 +132,14 @@ const updateAvatar = (req, res, next) => {
   // eslint-disable-next-line consistent-return
     .then((user) => {
       if (!user) {
-        // return res.status(404).send({ message: 'Пользователь не найден' });
         throw new NotFoundError('Пользователь не найден');
       }
       res.send({ data: user });
     })
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        // return res.status(400).send({ message: 'Ошибка валидации' });
         throw new BadRequestError('Ошибка валидации');
       }
-      // return res.status(500).send({ message: 'На сервере произошла ошибка' });
       next(err);
     });
 };

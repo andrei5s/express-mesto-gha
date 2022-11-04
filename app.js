@@ -6,7 +6,7 @@ const { errors } = require('celebrate');
 
 const routes = require('./routes/index');
 const { createUser, login } = require('./controllers/users');
-const { checkUser, checkLogin } = require('./middlewares/validation');
+const { checkUser, checkLogin } = require('./validation/validation');
 const { ERROR_SERVER } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
