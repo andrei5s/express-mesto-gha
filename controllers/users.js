@@ -70,7 +70,7 @@ const login = (req, res, next) => {
 
 const getUser = (req, res, next) => {
   User.find({})
-    .then((user) => res.status(STATUS_OK).send(user))
+    .then((users) => res.status(STATUS_OK).send(users))
     .catch(next);
 };
 
