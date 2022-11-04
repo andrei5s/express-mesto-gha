@@ -10,7 +10,17 @@ const BadDataError = require('../errors/beddataerr');
 const NotFoundError = require('../errors/not-found-err');
 const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
 
-const createUser = (req, res, next) => {
+function usersPasswordHandler(pass) {
+  if (!pass) {
+    throw new BadRequestError('user validation failed: password: Не указан пароль');
+  }
+  if (pass.length < 8) {
+    throw new BadRequestError('user validation failed: password: Пароль должен быть не короче 8 символов');
+  }
+  return bcrypt.hash(pass, 10);
+}
+
+/* const createUser = (req, res, next) => {
   const {
     email,
     password,
@@ -35,6 +45,27 @@ const createUser = (req, res, next) => {
       name,
       about,
       avatar,
+    }))
+    .then((user) => res
+      .status(STATUS_CREATED)
+      // .send({ _id: user._id, email: user.email }))
+      .send(user))
+    .catch((err) => {
+      if (err.code === 11000) {
+        throw new ExistError('Такой пользователь уже существует');
+      }
+      next(err);
+    });
+}; */
+
+const createUser = (req, res, next) => {
+  usersPasswordHandler(req.body.password)
+    .then((hash) => User.create({
+      name: req.body.name,
+      about: req.body.about,
+      avatar: req.body.avatar,
+      email: req.body.email,
+      password: hash,
     }))
     .then((user) => res
       .status(STATUS_CREATED)
