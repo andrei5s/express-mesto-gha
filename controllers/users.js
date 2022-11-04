@@ -134,6 +134,7 @@ const updateProfile = (req, res, next) => {
     .then((user) => {
       if (!user) {
         // return res.status(404).send({ message: 'Пользователь не найден' });
+        throw new NotFoundError('Пользователь не найден');
       }
       // res.status(200).send({ data: user });
       res.status(STATUS_OK).send(user);
