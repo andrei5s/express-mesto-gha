@@ -159,7 +159,8 @@ const updateAvatar = (req, res, next) => {
   // eslint-disable-next-line consistent-return
     .then((user) => {
       if (!user) {
-        return res.status(404).send({ message: 'Пользователь не найден' });
+        // return res.status(404).send({ message: 'Пользователь не найден' });
+        throw new NotFoundError('Пользователь не найден');
       }
       res.send({ data: user });
     })
