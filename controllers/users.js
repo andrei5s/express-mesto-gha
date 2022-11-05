@@ -38,9 +38,12 @@ const createUser = (req, res, next) => {
     .then((user) => res
       .status(STATUS_CREATED)
       .send({
-        email: user.email, name: user.name, about: user.about, avatar: user.avatar,
+        email: user.email,
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
       }))
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return new BadDataError('Ошибка валидации');
@@ -72,14 +75,14 @@ const getUser = async (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  User.findById(req.params.id)
+  User.findById(req.params.id).orFail(new Error('NotFound'))
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
       res.status(STATUS_OK).send(user);
     })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         return new BadRequestError('Не корректный _id');
@@ -96,7 +99,7 @@ const getCurrentUser = (req, res, next) => {
       }
       res.status(STATUS_OK).send(user);
     })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         return new BadRequestError('Не корректный _id');
@@ -108,14 +111,14 @@ const getCurrentUser = (req, res, next) => {
 const updateProfile = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
       res.status(STATUS_OK).send(user);
     })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
         return new BadRequestError('Не корректный _id');
@@ -137,7 +140,7 @@ const updateAvatar = (req, res, next) => {
       }
       res.send({ data: user });
     })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return new BadRequestError('Ошибка валидации');
