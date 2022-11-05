@@ -13,9 +13,10 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((user) => res.status(STATUS_CREATED).send({ data: user }))
+    // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name.includes('ValidationError')) {
-        next(new BadRequestError('Ошибка валидации данных'));
+        return next(new BadRequestError('Ошибка валидации данных'));
       }
       next(err);
     });
@@ -42,7 +43,7 @@ module.exports.deleteCard = (req, res, next) => {
     // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name === 'CastError') {
-        return new NotFoundError('Ошибка в id карточки');
+        return next(new BadRequestError('Ошибка валидации данных'));
       }
       next(err);
     });
@@ -59,7 +60,7 @@ module.exports.likeCard = (req, res, next) => {
     // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name === 'CastError') {
-        return new NotFoundError('Ошибка в id карточки');
+        return next(new BadRequestError('Ошибка валидации данных'));
       }
       next(err);
     });
@@ -76,7 +77,7 @@ module.exports.dislikeCard = (req, res, next) => {
     // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name === 'CastError') {
-        return new NotFoundError('Ошибка в id карточки');
+        return next(new BadRequestError('Ошибка валидации данных'));
       }
       next(err);
     });
