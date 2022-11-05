@@ -75,7 +75,7 @@ const getUser = async (req, res, next) => {
 };
 
 const getUserById = (req, res, next) => {
-  User.findById(req.params.id).orFail(new Error('NotFound'))
+  User.findById(req.params.id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
