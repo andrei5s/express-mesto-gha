@@ -15,10 +15,10 @@ module.exports.createCard = (req, res, next) => {
     .then((user) => res.status(STATUS_CREATED).send({ data: user }))
     .catch((err) => {
       if (err.name.includes('ValidationError')) {
-        throw new BadRequestError('Ошибка валидации данных');
+        next(new BadRequestError('Ошибка валидации данных'));
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 module.exports.getCards = (req, res, next) => {
@@ -37,9 +37,15 @@ module.exports.deleteCard = (req, res, next) => {
         throw new ForbiddenError('Невозможно удалить данную карточку');
       }
       card.remove();
+      res.status(STATUS_OK).send({ data: card });
     })
-    .then((card) => res.status(STATUS_OK).send({ data: card }))
-    .catch(next);
+    // eslint-disable-next-line consistent-return
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return new NotFoundError('Ошибка в id карточки');
+      }
+      next(err);
+    });
 };
 
 module.exports.likeCard = (req, res, next) => {
@@ -50,7 +56,13 @@ module.exports.likeCard = (req, res, next) => {
       }
       res.status(STATUS_OK).send({ data: card });
     })
-    .catch(next);
+    // eslint-disable-next-line consistent-return
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return new NotFoundError('Ошибка в id карточки');
+      }
+      next(err);
+    });
 };
 
 module.exports.dislikeCard = (req, res, next) => {
@@ -61,5 +73,11 @@ module.exports.dislikeCard = (req, res, next) => {
       }
       res.status(STATUS_OK).send({ data: card });
     })
-    .catch(next);
+    // eslint-disable-next-line consistent-return
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        return new NotFoundError('Ошибка в id карточки');
+      }
+      next(err);
+    });
 };

@@ -12,7 +12,7 @@ const {
 
 router.get('/', getUser);
 
-router.get('/me', checkUserById, getCurrentUser);
+router.get('/me', getCurrentUser);
 router.get('/:id', checkUserById, getUserById);
 
 router.patch('/:id', checkProfile, updateProfile);

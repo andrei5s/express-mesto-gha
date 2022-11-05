@@ -8,6 +8,7 @@ const routes = require('./routes/index');
 const { createUser, login } = require('./controllers/users');
 const { checkUser, checkLogin } = require('./validation/validation');
 const { ERROR_SERVER } = require('./utils/constants');
+const NotFoundError = require('./errors/not-found-err');
 
 const { PORT = 3000 } = process.env;
 
@@ -27,8 +28,8 @@ app.use(routes);
 
 app.use(express.json());
 
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Указанный путь не существует' });
+app.use('*', (req, res, next) => {
+  next(new NotFoundError('Указанный путь не существует'));
 });
 
 // Обработка ошибок celebrate

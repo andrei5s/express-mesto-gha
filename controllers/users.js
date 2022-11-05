@@ -40,9 +40,10 @@ const createUser = (req, res, next) => {
       .send({
         email: user.email, name: user.name, about: user.about, avatar: user.avatar,
       }))
+    // eslint-disable-next-line consistent-return
     .catch((err) => {
-      if (err.code === 11000) {
-        throw new ExistError('Такой пользователь уже существует');
+      if (err instanceof mongoose.Error.ValidationError) {
+        return new BadDataError('Ошибка валидации');
       }
       next(err);
     });
@@ -56,9 +57,6 @@ const login = (req, res, next) => {
       res.send({
         token: jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' }),
       });
-    })
-    .catch(() => {
-      throw new BadDataError('Неправильные почта или пароль');
     })
     .catch(next);
 };
@@ -81,9 +79,10 @@ const getUserById = (req, res, next) => {
       }
       res.status(STATUS_OK).send(user);
     })
+    // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        throw new BadRequestError('Не корректный _id');
+        return new BadRequestError('Не корректный _id');
       }
       next(err);
     });
@@ -97,9 +96,10 @@ const getCurrentUser = (req, res, next) => {
       }
       res.status(STATUS_OK).send(user);
     })
+    // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        throw new BadRequestError('Не корректный _id');
+        return new BadRequestError('Не корректный _id');
       }
       next(err);
     });
@@ -115,12 +115,13 @@ const updateProfile = (req, res, next) => {
       }
       res.status(STATUS_OK).send(user);
     })
+    // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.CastError) {
-        throw new BadRequestError('Не корректный _id');
+        return new BadRequestError('Не корректный _id');
       }
       if (err instanceof mongoose.Error.ValidationError) {
-        throw new BadRequestError('Ошибка валидации');
+        return new BadRequestError('Ошибка валидации');
       }
       next(err);
     });
@@ -136,9 +137,10 @@ const updateAvatar = (req, res, next) => {
       }
       res.send({ data: user });
     })
+    // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        throw new BadRequestError('Ошибка валидации');
+        return new BadRequestError('Ошибка валидации');
       }
       next(err);
     });
