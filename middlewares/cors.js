@@ -3,7 +3,9 @@ const allowedCors = [
   'http://project.andrei5s.nomoredomains.icu',
   'https://api.project.andrei5s.nomoredomains.icu',
   'http://api.project.andrei5s.nomoredomains.icu',
-  'localhost:3000',
+  'https://api.project.andrei5s.nomoredomains.icu/users/me',
+  'http://localhost:3000',
+  'http://localhost:3001',
 ];
 
 // eslint-disable-next-line consistent-return
