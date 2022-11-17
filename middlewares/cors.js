@@ -1,6 +1,8 @@
 const allowedCors = [
   'https://project.andrei5s.nomoredomains.icu',
   'http://project.andrei5s.nomoredomains.icu',
+  'https://api.project.andrei5s.nomoredomains.icu',
+  'http://api.project.andrei5s.nomoredomains.icu',
   'localhost:3000',
 ];
 
