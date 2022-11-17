@@ -9,18 +9,36 @@ const { createUser, login } = require('./controllers/users');
 const { checkUser, checkLogin } = require('./validation/validation');
 const { ERROR_SERVER } = require('./utils/constants');
 const NotFoundError = require('./errors/not-found-err');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const corsOption = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://localhost:27017/mestodb');
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+  autoIndex: true,
+});
 
 // для собирания JSON-формата
 app.use(bodyParser.json());
 // для приёма веб-страниц внутри POST-запроса
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+app.use(requestLogger);
+
+app.use(cors(corsOption));
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 
 app.post('/signin', checkLogin, login);
 app.post('/signup', checkUser, createUser);
@@ -31,6 +49,9 @@ app.use(express.json());
 app.use('*', (req, res, next) => {
   next(new NotFoundError('Указанный путь не существует'));
 });
+
+// подключаем логгер ошибок
+app.use(errorLogger);
 
 // Обработка ошибок celebrate
 app.use(errors());
