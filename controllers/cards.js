@@ -10,10 +10,10 @@ module.exports.createCard = (req, res, next) => {
     name,
     link,
   } = req.body;
-  const owner = req.user._id;
+  const owner = req.user;
   Card.create({ name, link, owner })
     .then((user) => res.status(STATUS_CREATED).send({ data: user }))
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name.includes('ValidationError')) {
         return next(new BadRequestError('Ошибка валидации данных'));
@@ -40,7 +40,7 @@ module.exports.deleteCard = (req, res, next) => {
       card.remove();
       res.status(STATUS_OK).send({ data: card });
     })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequestError('Ошибка валидации данных'));
@@ -57,7 +57,7 @@ module.exports.likeCard = (req, res, next) => {
       }
       res.status(STATUS_OK).send({ data: card });
     })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequestError('Ошибка валидации данных'));
@@ -74,7 +74,7 @@ module.exports.dislikeCard = (req, res, next) => {
       }
       res.status(STATUS_OK).send({ data: card });
     })
-    // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequestError('Ошибка валидации данных'));
