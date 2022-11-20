@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -10,7 +12,7 @@ const { checkUser, checkLogin } = require('./validation/validation');
 const { ERROR_SERVER } = require('./utils/constants');
 const NotFoundError = require('./errors/not-found-err');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const corsOption = require('./middlewares/cors');
+const corsReqest = require('./middlewares/cors');
 
 const app = express();
 app.use(cors());
@@ -30,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
-app.use(cors(corsOption));
+app.use(cors(corsReqest));
 
 app.get('/crash-test', () => {
   setTimeout(() => {

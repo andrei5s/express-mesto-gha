@@ -8,7 +8,7 @@ const allowedCors = [
 ];
 
 // eslint-disable-next-line consistent-return
-const corsOption = ((req, res, next) => {
+const corsReqest = ((req, res, next) => {
   const { origin } = req.headers;
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
@@ -28,4 +28,4 @@ const corsOption = ((req, res, next) => {
   next();
 });
 
-module.exports = corsOption;
+module.exports = corsReqest;
