@@ -3,7 +3,6 @@ const allowedCors = [
   'http://project.andrei5s.nomoredomains.icu',
   'https://api.project.andrei5s.nomoredomains.icu',
   'http://api.project.andrei5s.nomoredomains.icu',
-  'http://project.andrei5s.nomoredomains.icu/favicon.ico',
   'http://localhost:3000',
   'http://localhost:3001',
 ];
