@@ -10,7 +10,7 @@ module.exports.createCard = (req, res, next) => {
     name,
     link,
   } = req.body;
-  const owner = req.user._id;
+  const owner = req.user;
   Card.create({ name, link, owner })
     .then((user) => res.status(STATUS_CREATED).send({ data: user }))
     // eslint-disable-next-line consistent-return
