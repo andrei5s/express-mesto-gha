@@ -92,7 +92,7 @@ const getCurrentUser = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.status(STATUS_OK).send(user);
+      res.status(STATUS_OK).send(user.data);
     })
   // eslint-disable-next-line consistent-return
     .catch((err) => {
@@ -111,7 +111,7 @@ const updateProfile = (req, res, next) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
       }
-      res.status(STATUS_OK).send(user);
+      res.status(STATUS_OK).send(user.data);
     })
   // eslint-disable-next-line consistent-return
     .catch((err) => {
