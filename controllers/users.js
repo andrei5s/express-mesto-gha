@@ -16,13 +16,17 @@ const createUser = (req, res, next) => {
     about,
     avatar,
   } = req.body;
-  User.findOne({ email })
-    .then((user) => {
+  // User.findOne({ email })
+  if (!password) {
+    throw new BadRequestError('Неверный пароль');
+  }
+
+  /* .then((user) => {
       if (user) {
         throw new ExistError('Такой пользователь уже существует!');
-      }
-      return bcrypt.hash(password, 10);
-    })
+      } */
+  return bcrypt.hash(password, 10)
+  // })
     .then((hash) => User.create({
       email,
       password: hash,
@@ -42,6 +46,9 @@ const createUser = (req, res, next) => {
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new BadRequestError('Ошибка валидации данных'));
+      }
+      if (err.name === 'MongoError' && err.code === 11000) {
+        throw new ExistError('Такой пользователь уже существует!');
       }
       next(err);
     });
@@ -127,7 +134,7 @@ const updateProfile = (req, res, next) => {
 
 const updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true, upsert: true })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
   // eslint-disable-next-line consistent-return
     .then((user) => {
       if (!user) {
