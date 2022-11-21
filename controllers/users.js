@@ -126,7 +126,7 @@ const updateProfile = (req, res, next) => {
         return next(new BadRequestError('Не корректный _id'));
       }
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new BadRequestError('Не корректный _id'));
+        return next(new BadRequestError('Ошибка валидации данных'));
       }
       next(err);
     });
@@ -145,7 +145,7 @@ const updateAvatar = (req, res, next) => {
   // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new BadRequestError('Не корректный _id'));
+        return next(new BadRequestError('Ошибка валидации данных'));
       }
       next(err);
     });
