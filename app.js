@@ -48,7 +48,8 @@ app.use(routes);
 
 app.use(express.json());
 
-app.use('*', (req, res, next) => {
+// eslint-disable-next-line no-undef
+app.use('*', auth, (req, res, next) => {
   next(new NotFoundError('Указанный путь не существует'));
 });
 
