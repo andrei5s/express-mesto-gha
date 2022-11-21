@@ -17,11 +17,11 @@ const createUser = (req, res, next) => {
     avatar,
   } = req.body;
   // User.findOne({ email })
-  if (!password) {
+  /* if (!password) {
     throw new BadRequestError('Неверный пароль');
   }
 
-  /* .then((user) => {
+  .then((user) => {
       if (user) {
         throw new ExistError('Такой пользователь уже существует!');
       } */
@@ -47,7 +47,7 @@ const createUser = (req, res, next) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return next(new BadRequestError('Ошибка валидации данных'));
       }
-      if (err.name === 'MongoError' && err.code === 11000) {
+      if (err.code === 11000) {
         throw new ExistError('Такой пользователь уже существует!');
       }
       next(err);
