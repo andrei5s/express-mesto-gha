@@ -17,13 +17,7 @@ const corsReqest = require('./middlewares/cors');
 const app = express();
 app.use(cors());
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-  autoIndex: true,
-});
+mongoose.connect('mongodb://localhost:27017/mestodb');
 
 // для собирания JSON-формата
 app.use(bodyParser.json());
@@ -49,7 +43,7 @@ app.use(routes);
 app.use(express.json());
 
 // eslint-disable-next-line no-undef
-app.use('*', auth, (req, res, next) => {
+app.use('*', (req, res, next) => {
   next(new NotFoundError('Указанный путь не существует'));
 });
 
