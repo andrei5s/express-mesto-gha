@@ -24,7 +24,8 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.getCards = (req, res, next) => {
-  Card.find({}, { sort: { createdAt: -1 } })
+  // Card.find({}, { sort: { createdAt: -1 } })
+  Card.find({}).sort({ createdAt: -1 })
     // .then((data) => res.status(STATUS_OK).send(data))
     .then((cards) => {
       res.send(cards.map((card) => card.data));
