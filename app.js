@@ -11,6 +11,7 @@ const { createUser, login } = require('./controllers/users');
 const { checkUser, checkLogin } = require('./validation/validation');
 const { ERROR_SERVER } = require('./utils/constants');
 const NotFoundError = require('./errors/not-found-err');
+const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corsReqest = require('./middlewares/cors');
 
@@ -43,7 +44,7 @@ app.use(routes);
 app.use(express.json());
 
 // eslint-disable-next-line no-undef
-app.use('*', (req, res, next) => {
+app.use('*', auth, (req, res, next) => {
   next(new NotFoundError('Указанный путь не существует'));
 });
 

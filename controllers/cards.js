@@ -3,7 +3,7 @@ const BadRequestError = require('../errors/bedrequserror');
 const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
 
-const { STATUS_OK } = require('../utils/constants');
+const { STATUS_OK, STATUS_CREATED } = require('../utils/constants');
 
 module.exports.createCard = (req, res, next) => {
   const {
@@ -12,8 +12,7 @@ module.exports.createCard = (req, res, next) => {
   } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
-    // .then((user) => res.status(STATUS_CREATED).send({ data: user }))
-    .then((card) => res.send(card))
+    .then((user) => res.status(STATUS_CREATED).send({ data: user }))
     .catch((err) => {
       if (err.name.includes('ValidationError')) {
         next(new BadRequestError('Ошибка валидации данных'));
@@ -24,12 +23,8 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.getCards = (req, res, next) => {
-  // Card.find({}, { sort: { createdAt: -1 } })
-  Card.find({}).reverse()
-    // .then((data) => res.status(STATUS_OK).send(data))
-    .then((cards) => {
-      res.send(cards.map((card) => card));
-    })
+  Card.find({})
+    .then((data) => res.status(STATUS_OK).send(data))
     .catch(next);
 };
 
