@@ -26,9 +26,8 @@ const cardSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
+    timestamps: true,
   },
-
-  timestamps: true,
 
 }, {
   versionKey: false,
