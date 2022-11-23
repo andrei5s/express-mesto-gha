@@ -44,13 +44,14 @@ const createUser = (req, res, next) => {
         about: user.about,
         avatar: user.avatar,
       }))
-  // eslint-disable-next-line consistent-return
     .catch((err) => {
       if (err instanceof mongoose.Error.ValidationError) {
-        return next(new BadRequestError('Ошибка валидации данных'));
+        next(new BadRequestError('Ошибка валидации данных'));
+        return;
       }
       if (err.code === 11000) {
-        throw new ExistError('Такой пользователь уже существует!');
+        next(new ExistError('Такой пользователь уже существует!'));
+        return;
       }
       next(err);
     });
