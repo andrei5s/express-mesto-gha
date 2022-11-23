@@ -10,7 +10,7 @@ module.exports.createCard = (req, res, next) => {
     name,
     link,
   } = req.body;
-  const owner = req.user;
+  const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((user) => res.status(STATUS_CREATED).send({ data: user }))
     .catch((err) => {
@@ -23,7 +23,7 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.getCards = (req, res, next) => {
-  Card.find({}).sort({ createdAt: -1 })
+  Card.find({})
     // .then((data) => res.status(STATUS_OK).send(data))
     .then((cards) => {
       res.send(cards.map((card) => card));
